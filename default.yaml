@@ -1,0 +1,77 @@
+# Default configuration for TrainIT
+
+# Camera settings
+camera:
+  width: 1280
+  height: 720
+  fps: 30
+  device_id: 0  # 0 for default camera
+  auto_focus: true
+  auto_exposure: true
+
+# Detector settings
+detector:
+  model: yolov8n
+  confidence: 0.5
+  device: cuda  # cuda or cpu
+  classes: null  # null for all classes
+  img_size: [640, 640]
+
+# Tracker settings
+tracker:
+  type: bytetrack
+  max_age: 30
+  min_hits: 3
+  iou_threshold: 0.3
+  track_buffer: 30
+  match_threshold: 0.8
+
+# Analysis settings
+analysis:
+  motion:
+    trajectory_length: 30
+    prediction_horizon: 0.5  # seconds
+    min_confidence: 0.6
+    
+  interaction:
+    proximity_threshold: 100  # pixels
+    min_duration: 0.5  # seconds
+    decay_factor: 0.95
+
+# Visualization settings
+visualization:
+  trajectory:
+    length: 30
+    alpha: 0.7
+    thickness: 2
+    
+  heatmap:
+    alpha: 0.3
+    colormap: jet
+    blur_size: 7
+    
+  annotation:
+    box_thickness: 2
+    text_scale: 0.5
+    text_thickness: 1
+    max_text_width: 200
+
+# Output settings
+output:
+  save_video:
+    codec: mp4v
+    fps: 30
+    directory: data/output/videos
+    
+  analytics:
+    format: json
+    directory: data/output/analytics
+    save_interval: 300  # seconds
+
+# System settings
+system:
+  log_level: INFO
+  log_file: data/output/logs/trainit.log
+  gpu_memory_fraction: 0.8
+  queue_size: 2
+  num_threads: 4 
