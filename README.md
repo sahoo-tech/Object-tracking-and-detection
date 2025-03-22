@@ -1,130 +1,292 @@
-# API Documentation
+# Advanced Real-Time Object Detection and Tracking
 
-## Classes
+A production-ready real-time object detection and tracking system built with Python, YOLOv8, and OpenCV. The system provides advanced motion analysis, object interaction tracking, and comprehensive visualization features.
 
-### RealTimeObjectTracker
+## Project Structure
 
-Main class for object detection and tracking.
+```
+trainit/
+│
+├── src/                    # Source code
+│   ├── core/              # Core functionality
+│   │   ├── detector.py    # YOLOv8 detector
+│   │   ├── tracker.py     # ByteTrack tracker
+│   │   └── camera.py      # Camera handling
+│   │
+│   ├── analysis/          # Analysis modules
+│   │   ├── motion.py      # Motion analysis
+│   │   ├── interaction.py # Object interaction
+│   │   └── patterns.py    # Pattern recognition
+│   │
+│   └── visualization/     # Visualization modules
+│       ├── display.py     # Main display handling
+│       ├── heatmap.py     # Heatmap generation
+│       └── annotator.py   # Frame annotation
+│
+├── configs/               # Configuration files
+│   ├── default.yaml      # Default settings
+│   └── advanced.yaml     # Advanced settings
+│
+├── data/                 # Data directory
+│   ├── models/          # Model weights
+│   └── output/          # Output files
+│
+├── tests/               # Test files
+│   ├── unit/           # Unit tests
+│   └── integration/    # Integration tests
+│
+├── utils/              # Utility functions
+│   ├── logger.py      # Logging setup
+│   └── helpers.py     # Helper functions
+│
+├── scripts/            # Scripts
+│   ├── install.sh     # Installation script
+│   └── download_weights.sh  # Model download
+│
+├── docs/              # Documentation
+│   ├── api/          # API documentation
+│   ├── guides/       # User guides
+│   └── examples/     # Code examples
+│
+├── requirements.txt   # Project dependencies
+├── setup.py          # Package setup
+└── README.md         # Project documentation
+```
 
-#### Constructor Parameters
-- `mode` (TrackingMode): Operation mode (NORMAL, SAVE_VIDEO, ANALYTICS, ADVANCED)
+## Project Setup
 
-#### Methods
+### Environment Setup
+1. **System Requirements**:
+   - Python 3.8 or higher
+   - CUDA-capable GPU (recommended)
+   - Webcam with 720p or higher resolution
+   - 8GB RAM minimum (16GB recommended)
 
-##### `__init__(mode: TrackingMode = TrackingMode.ADVANCED)`
-Initializes the tracker with specified mode.
+2. **Directory Structure**:
+   - `src/`: Core implementation files
+   - `data/`: Model weights and output storage
+   - `configs/`: Configuration files
+   - `tests/`: Test suites
+   - `utils/`: Helper utilities
+   - `scripts/`: Installation and setup scripts
 
-##### `run()`
-Starts the tracking system.
+3. **Development Tools**:
+   - VS Code/PyCharm for development
+   - Git for version control
+   - pytest for testing
+   - black for code formatting
+   - mypy for type checking
 
-##### `process_frame(frame: np.ndarray) -> Tuple[np.ndarray, Detections]`
-Processes a single frame.
+## Datasets Used
 
-##### `_initialize_camera()`
-Initializes and configures the camera.
+### Training Data
+1. **COCO Dataset**:
+   - 80+ object classes
+   - Over 200K labeled images
+   - Instance segmentation
+   - Used for YOLOv8 training
 
-##### `_process_frames()`
-Background thread for frame processing.
+2. **Model Weights**:
+   - YOLOv8n.pt (default)
+   - YOLOv8s.pt (small)
+   - YOLOv8m.pt (medium)
+   - YOLOv8l.pt (large)
+   - YOLOv8x.pt (xlarge)
 
-##### `_update_trajectories(detections: Detections, frame_time: float)`
-Updates object trajectories.
+3. **Runtime Data**:
+   - Real-time webcam feed
+   - Video file input support
+   - Analytics data in JSON format
+   - Performance metrics logs
 
-##### `_update_heatmap(detections: Detections)`
-Updates the heatmap data.
+## Tools and Technologies
 
-##### `_update_interactions(detections: Detections)`
-Updates object interaction data.
+### Core Technologies
+1. **Computer Vision**:
+   - OpenCV 4.8.0+
+   - YOLOv8 by Ultralytics
+   - ByteTrack for object tracking
+   - NumPy for numerical operations
 
-### ObjectTrajectory
+2. **Deep Learning**:
+   - PyTorch 2.0+
+   - CUDA for GPU acceleration
+   - TorchVision for image processing
+   - Supervision for detection utils
 
-Class for storing and analyzing object trajectories.
+3. **Data Processing**:
+   - Pandas for analytics
+   - Matplotlib for plotting
+   - SciPy for scientific computing
+   - PyYAML for configuration
 
-#### Constructor Parameters
-- `positions`: List of position tuples
-- `velocities`: List of velocity tuples
-- `timestamps`: List of timestamps
-- `class_id`: Object class ID
-- `track_id`: Tracking ID
-- `confidence_history`: List of confidence values
+4. **Development Tools**:
+   - pytest for testing
+   - black for formatting
+   - mypy for type checking
+   - logging for debug info
 
-#### Methods
+## Execution Instructions
 
-##### `predict_next_position(time_ahead: float = 0.1) -> Tuple[float, float]`
-Predicts future position of object.
+### Basic Usage
+1. **Starting the System**:
+   ```bash
+   # Activate environment
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
 
-##### `update_motion_pattern()`
-Updates the motion pattern classification.
+   # Run application
+   python -m src.main
+   ```
 
-### AdvancedVisualizer
+2. **Operation Modes**:
+   ```bash
+   # Normal mode
+   python -m src.main --mode normal
 
-Class for visualization features.
+   # Video recording
+   python -m src.main --mode save_video
 
-#### Constructor Parameters
-- `frame_size`: Tuple of frame dimensions
+   # Analytics collection
+   python -m src.main --mode analytics
 
-#### Methods
+   # Advanced features
+   python -m src.main --mode advanced
+   ```
 
-##### `draw_trajectory(frame: np.ndarray, trajectory: ObjectTrajectory) -> np.ndarray`
-Draws object trajectory.
+3. **Configuration Options**:
+   ```bash
+   # Use custom config
+   python -m src.main --config configs/custom.yaml
 
-##### `draw_heatmap(frame: np.ndarray, heatmap: np.ndarray) -> np.ndarray`
-Draws heatmap overlay.
+   # Override settings
+   python -m src.main --confidence 0.6 --device cuda
+   ```
 
-##### `draw_interaction_lines(frame: np.ndarray, trajectories: Dict, interaction_matrix: Dict) -> np.ndarray`
-Draws interaction lines between objects.
+### Advanced Usage
+1. **Custom Analysis**:
+   ```bash
+   # Enable specific features
+   python -m src.main --enable-heatmap --enable-tracking
 
-##### `annotate_frame(frame: np.ndarray, detections: Detections, model_names: List[str] = None) -> np.ndarray`
-Annotates frame with detection boxes and labels.
+   # Set analysis parameters
+   python -m src.main --trajectory-length 50 --prediction-horizon 1.0
+   ```
 
-### TrackingStats
+2. **Output Options**:
+   ```bash
+   # Specify output directory
+   python -m src.main --output-dir /path/to/output
 
-Class for storing tracking statistics.
+   # Set video format
+   python -m src.main --video-format mp4 --video-fps 30
+   ```
 
-#### Properties
-- `total_objects`: Total objects detected
-- `unique_objects`: Dictionary of unique object counts
-- `frame_count`: Total frames processed
-- `fps_history`: List of FPS values
-- `trajectories`: Dictionary of object trajectories
-- `heatmap_data`: Numpy array of heatmap
-- `interaction_matrix`: Dictionary of object interactions
-- `object_velocities`: Dictionary of object velocities
+3. **Performance Tuning**:
+   ```bash
+   # Adjust thread count
+   python -m src.main --num-threads 4
 
-#### Methods
+   # Set GPU memory fraction
+   python -m src.main --gpu-memory-fraction 0.8
+   ```
 
-##### `update_interaction_history(frame_time: float)`
-Updates interaction history.
+## Features
 
-##### `get_interaction_statistics() -> Dict`
-Returns interaction statistics.
+### Core Functionality
+- Real-time object detection using YOLOv8
+- Advanced object tracking with ByteTrack
+- Motion prediction and pattern analysis
+- Object interaction detection and visualization
+- Dynamic heatmap generation
+- Multi-threaded processing for optimal performance
 
-## Enums
+### Advanced Features
+- 8-directional motion prediction
+- Real-time velocity and acceleration analysis
+- Interaction matrix and proximity detection
+- Gradient-colored trajectory visualization
+- Performance monitoring and analytics
+- Multiple operation modes (Normal, Save Video, Analytics, Advanced)
 
-### TrackingMode
-- `NORMAL`: Basic tracking mode
-- `SAVE_VIDEO`: Records video output
-- `ANALYTICS`: Enables analytics collection
-- `ADVANCED`: Enables all features
+## Quick Start
 
-## Constants
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/trainit.git
+cd trainit
+```
 
-### Camera Settings
-- Frame Width: 1280
-- Frame Height: 720
-- FPS: 30
-- Confidence Threshold: 0.5
+2. Run the installation script:
+```bash
+# Linux/Mac
+./scripts/install.sh
 
-### Tracking Parameters
-- Track High Threshold: 0.5
-- Track Low Threshold: 0.1
-- New Track Threshold: 0.6
-- Track Buffer: 30
-- Match Threshold: 0.8
+# Windows
+scripts\install.bat
+```
 
-### Visualization Parameters
-- Trajectory Length: 30
-- Heatmap Alpha: 0.3
-- Max Text Width: 200
-- Trajectory Alpha: 0.7
-- Interaction Alpha: 0.5
-- Prediction Alpha: 0.8 
+3. Start the application:
+```bash
+python -m src.main
+```
+
+## Configuration
+
+The system can be configured through YAML files in the `configs/` directory:
+
+```yaml
+# configs/default.yaml
+detector:
+  model: yolov8n
+  confidence: 0.5
+  device: cuda
+
+tracker:
+  max_age: 30
+  min_hits: 3
+  iou_threshold: 0.3
+
+visualization:
+  trajectory_length: 30
+  heatmap_alpha: 0.3
+```
+
+## Development
+
+### Setting up the development environment
+
+1. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+```
+
+2. Install development dependencies:
+```bash
+pip install -r requirements-dev.txt
+```
+
+3. Run tests:
+```bash
+pytest tests/
+```
+
+### Code Style
+- Follow PEP 8 guidelines
+- Use type hints
+- Write docstrings in Google format
+- Keep functions focused and small
+
+## Acknowledgments
+
+- YOLOv8 by Ultralytics
+- ByteTrack implementation
+- OpenCV community
+- PyTorch framework
+
+## Contact
+
+Your Name - [@SayantanSahoo]
+Project Link: [https://github.com/yourusername/trainit](https://github.com/yourusername/trainit)
