@@ -213,8 +213,8 @@ trainit/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/trainit.git
-cd trainit
+git clone https://github.com/sahoo-tech/Object-tracking-and-detection.git
+cd Object-tracking-and-detection
 ```
 
 2. Run the installation script:
@@ -289,4 +289,4 @@ pytest tests/
 ## Contact
 
 Your Name - [@SayantanSahoo]
-Project Link: [https://github.com/yourusername/trainit](https://github.com/yourusername/trainit)
+Project Link: (https://github.com/sahoo-tech/Object-tracking-and-detection.git)
